@@ -1,4 +1,5 @@
 .terraform
 variables.tf
+00-variables.tf
 openshift
 openshift.pub

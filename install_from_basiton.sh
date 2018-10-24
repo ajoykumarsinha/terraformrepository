@@ -69,10 +69,10 @@ cat > /home/ec2-user/inventory.cfg << EOF
 EOF
 
 # Change ownership of file to ec2-user
-#sudo chown ec2-user:ec2-user /home/ec2-user/inventory.cfg
+sudo chown ec2-user:ec2-user /home/ec2-user/inventory.cfg
 
 # Run the playbook.
-ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ~/inventory.cfg ~/openshift-ansible/playbooks/byo/config.yml
+ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ~/inventory.cfg ~/openshift-ansible/playbooks/byo/config.yml -vvv
 
 # uncomment for verbose! -vvv
 

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-sleep 60
+sleep 100
 echo '{ "wait": "60" }'
