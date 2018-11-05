@@ -7,6 +7,12 @@
 set -x
 exec > /var/log/user-data.log 2>&1
 
+mkdir -p /etc/aws/
+cat > /etc/aws/aws.conf <<- EOF
+[Global]
+Zone = ${availability_zone}
+EOF
+
 # Create initial logs config.
 cat > ./awslogs.conf << EOF
 [general]
@@ -28,7 +34,7 @@ EOF
 
 # Download and run the AWS logs agent.
 curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-python ./awslogs-agent-setup.py --non-interactive --region ap-south-1 -c ./awslogs.conf
+python ./awslogs-agent-setup.py --non-interactive --region us-east-1 -c ./awslogs.conf
 
 # Start the awslogs service, also start on reboot.
 # Note: Errors go to /var/log/awslogs.log
@@ -41,9 +47,6 @@ chkconfig awslogs on
 # Install packages required to setup OpenShift.
 yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion httpd-tools
 yum update -y
-# Noticed that RHEL was being upgraded to 7.5
-# Following could be used to stop that.
-# yum -exclude=kernel* update -y
 
 # Note: The step below is not in the official docs, I needed it to install
 # Docker. If anyone finds out why, I'd love to know.
@@ -65,10 +68,8 @@ docker-storage-setup
 
 # Restart docker and go to clean state as required by docker-storage-setup.
 systemctl stop docker
-#systemd stop docker
 rm -rf /var/lib/docker/*
 systemctl restart docker
-#systemd restart docker
 
 # Allow the ec2-user to sudo without a tty, which is required when we run post
 # install scripts on the server.

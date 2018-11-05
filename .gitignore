@@ -1,5 +1,10 @@
+# Infrastructure ignores.
 .terraform
-variables.tf
-00-variables.tf
-openshift
-openshift.pub
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+
+# The generated inventory file.
+inventory.cfg
+*.lock.info
+.private.env
